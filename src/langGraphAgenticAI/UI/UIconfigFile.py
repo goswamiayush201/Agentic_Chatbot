@@ -1,4 +1,30 @@
+import os
 from configparser import ConfigParser
+
+class Config:
+    def __init__(self):
+        # Always build the path relative to THIS file, not the working dir
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        config_file = os.path.join(base_dir, "UIconfigFile.ini")
+
+        self.config = ConfigParser()
+        self.config.read(config_file, encoding="utf-8")
+
+    def get_llm_options(self):
+        return self.config["DEFAULT"].get("LLM_OPTIONS", "Groq").split(", ")
+
+    def get_usecase_options(self):
+        return self.config["DEFAULT"].get("USECASE_OPTIONS", "Basic Chatbot").split(", ")
+
+    def get_groq_model_options(self):
+        return self.config["DEFAULT"].get("GROQ_MODEL_OPTIONS", "llama-3.1-8b-instant").split(", ")
+
+    def get_page_title(self):
+        return self.config["DEFAULT"].get("PAGE_TITLE", "LangGraph: Build stateful Agentic AI graph")
+
+
+
+"""from configparser import ConfigParser
 
 
 class Config:
@@ -16,4 +42,4 @@ class Config:
         return self.config["DEFAULT"].get("GROQ_MODEL_OPTIONS").split(", ")
     
     def get_page_title(self):
-        return self.config["DEFAULT"].get("PAGE_TITLE")
+        return self.config["DEFAULT"].get("PAGE_TITLE") """
